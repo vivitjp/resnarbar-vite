@@ -18,29 +18,36 @@ export default function MuiPage() {
       <Grid container columns={5} spacing={0} direction="row">
         {columns.map((col) => (
           <Grid size={1} key={col.id} sx={{ height: 100 }}>
-            <Tooltip
-              title={tooltipText}
-              placement="top-start"
-              slotProps={{
-                tooltip: {
-                  sx: {
-                    bgcolor: 'white',
-                    color: 'black',
-                    width: 100,
-                    height: 30,
-                    overflow: 'auto',
-                    whiteSpace: 'pre-line',
-                    border: '1px solid #ccc',
-                    borderRadius: 0,
+            {col.id !== 5 ? (
+              <Tooltip
+                title={tooltipText}
+                placement="top-start"
+                slotProps={{
+                  tooltip: {
+                    sx: {
+                      bgcolor: 'white',
+                      color: 'black',
+                      width: 100,
+                      height: 40,
+                      overflow: 'auto',
+                      whiteSpace: 'pre-line',
+                      border: '1px solid #ccc',
+                      borderRadius: 0,
+                    },
                   },
-                },
-              }}
-            >
+                }}
+              >
+                <Paper className="mui-grid-cell" sx={{ width: '50px', padding: 2 }}>
+                  <div className="mui-grid-label">{col.label}</div>
+                  <div className="mui-grid-value">{col.value}</div>
+                </Paper>
+              </Tooltip>
+            ) : (
               <Paper className="mui-grid-cell" sx={{ width: '50px', padding: 2 }}>
                 <div className="mui-grid-label">{col.label}</div>
                 <div className="mui-grid-value">{col.value}</div>
               </Paper>
-            </Tooltip>
+            )}
           </Grid>
         ))}
       </Grid>
