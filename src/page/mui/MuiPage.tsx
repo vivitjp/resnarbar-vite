@@ -13,10 +13,10 @@ export default function MuiPage() {
   return (
     <Container maxWidth="md" style={{ marginTop: 40 }}>
       <h2>MUI Grid サンプル</h2>
-      <Grid container spacing={2}>
+      <Grid container columns={5} spacing={0} direction="row">
         {columns.map((col) => (
-          <Grid item xs={2.4} key={col.id}>
-            <Paper className="mui-grid-cell" elevation={3}>
+          <Grid size={1} key={col.id} sx={{ height: 100 }}>
+            <Paper className="mui-grid-cell" sx={{ width: '50px', padding: 2 }}>
               <div className="mui-grid-label">{col.label}</div>
               <div className="mui-grid-value">{col.value}</div>
             </Paper>
