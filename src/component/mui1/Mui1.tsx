@@ -8,7 +8,7 @@ export default function Mui1() {
   const [cellHovered, setCellHovered] = useState(false);
   const [tooltipHovered, setTooltipHovered] = useState(false);
 
-  const [isCursonOnEffectiveArea, setIsCursonOnEffectiveArea] = useState(false);
+  // const [isCursonOnEffectiveArea, setIsCursonOnEffectiveArea] = useState(false);
 
   const handleClose = useCallback(() => {
     if (!cellHovered && !tooltipHovered) {
