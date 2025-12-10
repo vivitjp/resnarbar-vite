@@ -10,6 +10,8 @@ export default function Mui1() {
 
   // const [isCursonOnEffectiveArea, setIsCursonOnEffectiveArea] = useState(false);
 
+  // コメント
+
   const handleClose = useCallback(() => {
     if (!cellHovered && !tooltipHovered) {
       setAnchorEl(null);
