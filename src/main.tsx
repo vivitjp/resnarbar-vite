@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MuiIndex from './page/mui/index.tsx';
 
 // GitHub Pages にデプロイする場合、basename を設定
+// GitHubのリポジトリで Rulesets（ルールセット）を作成
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
