@@ -1,13 +1,5 @@
 import React from 'react';
-import { Popover, type SxProps } from '@mui/material';
-
-export const columns = [
-  { id: 1, label: 'ID', value: '1' },
-  { id: 2, label: '名前', value: 'サンプル' },
-  { id: 3, label: '年齢', value: '25' },
-  { id: 4, label: '職業', value: 'エンジニア' },
-  { id: 5, label: '国', value: '日本' },
-];
+import { Tooltip, type SxProps } from '@mui/material';
 
 export const tooltipSx: SxProps = {
   bgcolor: 'white',
@@ -27,38 +19,34 @@ export const tooltipSx: SxProps = {
 };
 
 export interface CommonTooltipProps {
-  title: string;
+  title: React.ReactNode;
   open: boolean;
-  anchorEl: HTMLElement | null;
-  popoverId?: string;
-  onClose: () => void;
-  children: React.ReactNode;
-  onTooltipMouseEnter?: () => void;
-  onTooltipMouseLeave?: () => void;
+  onClose: (event?: React.SyntheticEvent | Event | null, reason?: string) => void;
+  children: React.ReactElement;
+  onTooltipMouseEnter?: (event?: React.MouseEvent) => void;
+  onTooltipMouseLeave?: (event?: React.MouseEvent) => void;
+  followCursor?: boolean;
 }
-
-export function CommonTooltip({ title, open, anchorEl, popoverId, onClose, children, onTooltipMouseEnter, onTooltipMouseLeave }: CommonTooltipProps) {
+export function CommonTooltip({ title, open, onClose, children, onTooltipMouseEnter, onTooltipMouseLeave, followCursor }: CommonTooltipProps) {
   return (
-    <>
+    <Tooltip
+      title={<pre style={{ margin: 0, userSelect: 'text', fontFamily: 'inherit', padding: 8 }}>{title}</pre>}
+      open={open}
+      onClose={onClose}
+      disableFocusListener
+      disableTouchListener
+      enterDelay={0}
+      leaveDelay={0}
+      followCursor={!!followCursor}
+      slotProps={{
+        tooltip: {
+          sx: { ...tooltipSx, pointerEvents: 'auto', zIndex: 1400 },
+          onMouseEnter: onTooltipMouseEnter,
+          onMouseLeave: onTooltipMouseLeave,
+        }
+      }}
+    >
       {children}
-      <Popover
-        open={open}
-        anchorEl={anchorEl}
-        onClose={onClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        PaperProps={{ ...(popoverId ? { id: popoverId } : {}), sx: { ...tooltipSx, userSelect: 'text', pointerEvents: 'auto', zIndex: 1400 } }}
-        disableRestoreFocus
-      >
-        <div
-          onMouseEnter={onTooltipMouseEnter}
-          onMouseLeave={onTooltipMouseLeave}
-        >
-          <pre
-            style={{ margin: 0, userSelect: 'text', fontFamily: 'inherit', padding: 8 }}
-          >{title}</pre>
-        </div>
-      </Popover>
-    </>
+    </Tooltip>
   );
 }

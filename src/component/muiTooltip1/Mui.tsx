@@ -27,7 +27,14 @@ export default function Mui1() {
         {columns.map((col) => {
           return (
             <Grid size={1} key={col.id} sx={{ height: 100 }} data-id={col.id} gap={0}>
-              <BasicTooltip title={title} arrow >
+              <BasicTooltip
+                title={title}
+                arrow
+                width={"160px"}
+                height={"140px"}
+                multiline={true}
+                followCursor={false}
+              >
                 <Paper
                   className="mui-grid-cell"
                   sx={{ width: '50px', padding: 2, margin: 0 }}

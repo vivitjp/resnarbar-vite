@@ -1,10 +1,20 @@
 import { Container, Grid, Paper } from '@mui/material';
 import { useState } from 'react';
-import { columns, CommonTooltip } from './Tooltip';
+import { CommonTooltip } from './Tooltip';
 import './Mui.css';
+
+
+export const columns = [
+  { id: 1, label: 'ID', value: '1' },
+  { id: 2, label: '名前', value: 'サンプル' },
+  { id: 3, label: '年齢', value: '25' },
+  { id: 4, label: '職業', value: 'エンジニア' },
+  { id: 5, label: '国', value: '日本' },
+];
 
 export default function Mui1() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const title = columns.map(c => `${c.label}:\n  ${c.value}`).join('\n\n');
 
   return (
     <Container maxWidth="md" style={{ marginTop: 40 }}>
@@ -19,25 +29,15 @@ export default function Mui1() {
           return (
             <Grid size={1} key={col.id} sx={{ height: 100 }} data-id={col.id}>
               <CommonTooltip
-                title={columns.map(c => `${c.label}:\n  ${c.value}`).join('\n\n')}
+                title={title}
                 open={!!anchorEl}
-                anchorEl={anchorEl}
-                popoverId={`mui-tooltip-${col.id}`}
                 onClose={() => setAnchorEl(null)}
               >
                 <Paper
                   className="mui-grid-cell"
                   sx={{ width: '50px', padding: 2 }}
-                  onMouseEnter={(e) => {
-                    setAnchorEl(e.currentTarget);
-                  }}
-                  onMouseLeave={(e) => {
-                    // relatedTarget が popover 内なら閉じない
-                    const to = (e as any).relatedTarget as Node | null;
-                    const pop = document.getElementById(`mui-tooltip-${col.id}`);
-                    if (to && pop && pop.contains(to)) return;
-                    setAnchorEl(null);
-                  }}
+                  onMouseEnter={(e) => setAnchorEl(e.currentTarget)}
+                  onMouseLeave={() => setAnchorEl(null)}
                 >
                   <div className="mui-grid-label">{col.label}</div>
                   <div className="mui-grid-value">{col.value}</div>
