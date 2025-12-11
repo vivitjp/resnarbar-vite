@@ -6,7 +6,7 @@ import { title, columns } from '../common/data';
 export default function Mui1() {
   return (
     <Container maxWidth="md" style={{ marginTop: 40 }}>
-      <h2>MUI Tooltip セル統合(国除外) サンプル</h2>
+      <h2>MUI Tooltip セル統合 (国除外) サンプル</h2>
       <Box sx={{ display: 'flex', gap: 0 }}>
         <BasicTooltip
           title={title}

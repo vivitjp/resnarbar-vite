@@ -9,7 +9,7 @@ const MuiIndex: React.FC = () => {
     <div>
       <MuiTooltipSample1 />
       <MuiTooltipSample2 />
-      <Box sx={{ marginTop: 5, padding: 2 }}> 課題は選択文字のコピー方法(Control+C のみ) </Box>
+      <Box sx={{ marginTop: 5, padding: 2 }}> Tooltips内の文字選択でコピー </Box>
     </div>
   );
 };

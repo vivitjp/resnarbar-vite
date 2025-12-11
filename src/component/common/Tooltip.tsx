@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Box, { type BoxProps } from '@mui/material/Box';
 import Tooltip, { type TooltipProps } from '@mui/material/Tooltip';
+import Snackbar from '@mui/material/Snackbar';
 import { type Instance } from '@popperjs/core';
 
 interface BasicTooltipProps extends Omit<TooltipProps, 'slotProps'> {
@@ -16,6 +17,7 @@ export default function BasicTooltip({ children, boxProps, placement = 'top', ar
   const positionRef = React.useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const popperRef = React.useRef<Instance | null>(null);
   const areaRef = React.useRef<HTMLDivElement | null>(null);
+  const titleRef = React.useRef<HTMLElement | null>(null);
 
   const handleMouseMove = (event: React.MouseEvent) => {
     positionRef.current = { x: event.clientX, y: event.clientY };
@@ -60,25 +62,41 @@ export default function BasicTooltip({ children, boxProps, placement = 'top', ar
     },
   };
 
-  const copyHandler = () => {
-    const selection = window.getSelection();
-    if (selection) {
+  const [copied, setCopied] = React.useState<string | null>(null);
+
+  const copyHandler = (container?: HTMLElement | null) => {
+    try {
+      const selection = window.getSelection();
+      if (!selection) return;
       const selectedText = selection.toString();
-      if (selectedText) {
-        navigator.clipboard.writeText(selectedText).then(() => {
-          //console.log('Copied to clipboard:', selectedText);
-        }).catch((err) => {
-          //console.error('Failed to copy text: ', err);
-        });
+      if (!selectedText) return;
+
+      const anchor = selection.anchorNode as Node | null;
+      const focus = selection.focusNode as Node | null;
+
+      if (container) {
+        const inside =
+          (anchor && container.contains(anchor)) ||
+          (focus && container.contains(focus));
+        if (!inside) return;
       }
+
+      navigator.clipboard.writeText(selectedText).then(() => {
+        setCopied(selectedText);
+      }).catch((err) => {
+        console.error('Failed to copy text: ', err);
+      });
+    } catch (err) {
+      console.error('copyHandler error:', err);
     }
-  }
+  };
 
   let titleProp: React.ReactNode = rawTitle;
   if (typeof rawTitle === 'string' && (multiline || width)) {
     titleProp = (
       <Box
         component="span"
+        ref={titleRef as any}
         sx={{
           display: 'block',
           whiteSpace: multiline ? 'pre-line' : undefined,
@@ -92,8 +110,8 @@ export default function BasicTooltip({ children, boxProps, placement = 'top', ar
           },
           scrollbarWidth: 'thin'
         }}
-        onDoubleClick={copyHandler}
-        onSelect={copyHandler}
+        onMouseUp={() => copyHandler(titleRef.current)}
+        onTouchEnd={() => copyHandler(titleRef.current)}
       >
         {rawTitle}
       </Box>
@@ -101,25 +119,34 @@ export default function BasicTooltip({ children, boxProps, placement = 'top', ar
   }
 
   return (
-    <Tooltip
-      placement={placement}
-      arrow={arrow}
-      {...rest}
-      title={titleProp}
-      slotProps={mergedSlotProps}
-      followCursor={followCursor}
-    >
-      <Box
-        ref={areaRef}
-        onMouseMove={followCursor ? handleMouseMove : undefined}
-        sx={{
-          p: 0,
-          backgroundColor: 'white'
-        }}
-        {...boxProps}
+    <>
+      <Tooltip
+        placement={placement}
+        arrow={arrow}
+        {...rest}
+        title={titleProp}
+        slotProps={mergedSlotProps}
+        followCursor={followCursor}
       >
-        {children}
-      </Box>
-    </Tooltip>
+        <Box
+          ref={areaRef}
+          onMouseMove={followCursor ? handleMouseMove : undefined}
+          sx={{
+            p: 0,
+            backgroundColor: 'white'
+          }}
+          {...boxProps}
+        >
+          {children}
+        </Box>
+      </Tooltip>
+      <Snackbar
+        open={copied != null}
+        autoHideDuration={3000}
+        onClose={() => setCopied(null)}
+        message={copied ? `Copied: ${copied.length > 60 ? copied.slice(0, 57) + '...' : copied}` : undefined}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      />
+    </>
   );
 }
