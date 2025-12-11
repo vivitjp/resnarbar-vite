@@ -1,13 +1,15 @@
 
 import React from 'react';
-import Mui1 from '../../component/mui1/Mui1';
-import Mui2 from '../../component/mui2/Mui2';
+import MuiTooltipSample1 from '../../component/muiTooltip1/Grid';
+import MuiTooltipSample2 from '../../component/muiTooltip2/Grid';
+import { Box } from '@mui/material';
 
 const MuiIndex: React.FC = () => {
   return (
     <div>
-      <Mui1 />
-      <Mui2 />
+      <MuiTooltipSample1 />
+      <MuiTooltipSample2 />
+      <Box sx={{ marginTop: 5, padding: 2 }}> Tooltips内の文字選択でコピー </Box>
     </div>
   );
 };
