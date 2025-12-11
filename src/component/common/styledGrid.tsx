@@ -3,10 +3,12 @@ import Grid, { type GridProps } from '@mui/material/Grid';
 
 // Extend MUI Grid so this component accepts all Grid props (container/item, spacing, xs, etc.)
 export const GridStyled = styled(Grid) <GridProps>`
-  padding: 16px;
+  padding: 0px;
   text-align: center;
   background: #f5f5f5;
   border-radius: 0;
+  margin: 0;
+  padding: 0;
 
   .mui-grid-label {
     font-weight: bold;

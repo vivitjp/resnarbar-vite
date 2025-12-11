@@ -1,5 +1,5 @@
 import { Box, Container, Paper } from '@mui/material';
-import GridStyled from '../common/styledGrid';
+import GridStyled, { GridLabel, GridValue } from '../common/styledGrid';
 import BasicTooltip from './Tooltip';
 
 const columns = [
@@ -34,7 +34,12 @@ export default function Mui1() {
           >
             {columns.slice(0, 4).map((col) => {
               return (
-                <GridStyled size={1} key={col.id} sx={{ height: 100 }} data-id={col.id} gap={0}>
+                <GridStyled
+                  size={1}
+                  key={col.id}
+                  data-id={col.id}
+                  gap={0}
+                >
                   <Paper
                     className="mui-grid-cell"
                     sx={{ width: '50px', padding: 2, margin: 0 }}
@@ -56,13 +61,19 @@ export default function Mui1() {
         >
           {columns.slice(4, 6).map((col) => {
             return (
-              <GridStyled size={1} key={col.id} sx={{ height: 100 }} data-id={col.id} gap={0}>
+              <GridStyled
+                size={1}
+                key={col.id}
+                // sx={{ height: 100 }}
+                data-id={col.id}
+                gap={0}
+              >
                 <Paper
                   className="mui-grid-cell"
                   sx={{ width: '50px', padding: 2, margin: 0 }}
                 >
-                  <div className="mui-grid-label">{col.label}</div>
-                  <div className="mui-grid-value">{col.value}</div>
+                  <GridLabel className="mui-grid-label">{col.label}</GridLabel>
+                  <GridValue className="mui-grid-value">{col.value}</GridValue>
                 </Paper>
               </GridStyled>
             );

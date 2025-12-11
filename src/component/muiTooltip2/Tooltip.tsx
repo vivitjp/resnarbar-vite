@@ -25,7 +25,6 @@ export default function BasicTooltip({ children, boxProps, placement = 'top', ar
     }
   };
 
-  // Extract incoming slotProps and title so we can override/merge them safely
   const { title: rawTitle, slotProps: incomingSlotProps, width, height, multiline = false, followCursor = false, ...rest } = tooltipProps as any;
 
   const mergedSlotProps = {

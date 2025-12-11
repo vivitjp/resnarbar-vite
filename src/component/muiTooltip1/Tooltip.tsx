@@ -5,10 +5,7 @@ import { type Instance } from '@popperjs/core';
 
 interface BasicTooltipProps extends Omit<TooltipProps, 'slotProps'> {
   boxProps?: BoxProps;
-  // MUI versions differ on slot prop names; allow callers to pass slotProps
-  // (keeps runtime flexibility while avoiding type errors).
   slotProps?: any;
-  // optional visual customizations
   width?: number | string;
   height?: number | string;
   multiline?: boolean;
@@ -28,7 +25,6 @@ export default function BasicTooltip({ children, boxProps, placement = 'top', ar
     }
   };
 
-  // Extract incoming slotProps and title so we can override/merge them safely
   const { title: rawTitle, slotProps: incomingSlotProps, width, height, multiline = false, followCursor = false, ...rest } = tooltipProps as any;
 
   const mergedSlotProps = {
@@ -36,9 +32,6 @@ export default function BasicTooltip({ children, boxProps, placement = 'top', ar
     popper: {
       ...(incomingSlotProps?.popper ?? {}),
       popperRef,
-      // Only override anchorEl when followCursor is enabled. When false,
-      // leave incomingSlotProps.popper.anchorEl untouched so Tooltip uses
-      // the normal anchor behavior.
       ...(followCursor
         ? {
           anchorEl: {
@@ -58,7 +51,7 @@ export default function BasicTooltip({ children, boxProps, placement = 'top', ar
         ...(height ? { height } : {}),
         backgroundColor: 'white',
         border: '1px solid #ccc',
-        boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
+        boxShadow: '0px 0px 6px rgba(0,0,0,0.1)',
         '&::-webkit-scrollbar': {
           width: '4px'
         },
@@ -67,8 +60,6 @@ export default function BasicTooltip({ children, boxProps, placement = 'top', ar
     },
   };
 
-  // If title is a plain string and multiline or width is requested,
-  // wrap it so newlines render and width applies.
   let titleProp: React.ReactNode = rawTitle;
   if (typeof rawTitle === 'string' && (multiline || width)) {
     titleProp = (
