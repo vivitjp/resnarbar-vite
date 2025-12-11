@@ -30,14 +30,13 @@ export interface CommonTooltipProps {
   title: string;
   open: boolean;
   anchorEl: HTMLElement | null;
-  popoverId?: string;
   onClose: () => void;
   children: React.ReactNode;
   onTooltipMouseEnter?: () => void;
   onTooltipMouseLeave?: () => void;
 }
 
-export function CommonTooltip({ title, open, anchorEl, popoverId, onClose, children, onTooltipMouseEnter, onTooltipMouseLeave }: CommonTooltipProps) {
+export function CommonTooltip({ title, open, anchorEl, onClose, children, onTooltipMouseEnter, onTooltipMouseLeave }: CommonTooltipProps) {
   return (
     <>
       {children}
@@ -47,7 +46,7 @@ export function CommonTooltip({ title, open, anchorEl, popoverId, onClose, child
         onClose={onClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        PaperProps={{ ...(popoverId ? { id: popoverId } : {}), sx: { ...tooltipSx, userSelect: 'text', pointerEvents: 'auto', zIndex: 1400 } }}
+        PaperProps={{ sx: { ...tooltipSx, userSelect: 'text', pointerEvents: 'auto', zIndex: 1400 } }}
         disableRestoreFocus
       >
         <div

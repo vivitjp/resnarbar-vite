@@ -5,6 +5,8 @@ import './Mui.css';
 
 export default function Mui1() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [isCellEntered, setIsCellEntered] = useState(false);
+  const [isTooltipEntered, setIsTooltipEntered] = useState(false);
 
   return (
     <Container maxWidth="md" style={{ marginTop: 40 }}>
@@ -20,23 +22,23 @@ export default function Mui1() {
             <Grid size={1} key={col.id} sx={{ height: 100 }} data-id={col.id}>
               <CommonTooltip
                 title={columns.map(c => `${c.label}:\n  ${c.value}`).join('\n\n')}
-                open={!!anchorEl}
+                open={!!anchorEl && (isCellEntered || isTooltipEntered)}
                 anchorEl={anchorEl}
-                popoverId={`mui-tooltip-${col.id}`}
                 onClose={() => setAnchorEl(null)}
+                onTooltipMouseEnter={() => setIsTooltipEntered(true)}
+                onTooltipMouseLeave={() => setIsTooltipEntered(false)}
               >
                 <Paper
                   className="mui-grid-cell"
                   sx={{ width: '50px', padding: 2 }}
                   onMouseEnter={(e) => {
                     setAnchorEl(e.currentTarget);
+                    setIsCellEntered(true);
+                    setIsTooltipEntered(true)
                   }}
-                  onMouseLeave={(e) => {
-                    // relatedTarget が popover 内なら閉じない
-                    const to = (e as any).relatedTarget as Node | null;
-                    const pop = document.getElementById(`mui-tooltip-${col.id}`);
-                    if (to && pop && pop.contains(to)) return;
-                    setAnchorEl(null);
+                  onMouseLeave={() => {
+                    setIsCellEntered(false);
+                    setIsTooltipEntered(true)
                   }}
                 >
                   <div className="mui-grid-label">{col.label}</div>
