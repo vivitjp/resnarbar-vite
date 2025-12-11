@@ -60,6 +60,20 @@ export default function BasicTooltip({ children, boxProps, placement = 'top', ar
     },
   };
 
+  const copyHandler = () => {
+    const selection = window.getSelection();
+    if (selection) {
+      const selectedText = selection.toString();
+      if (selectedText) {
+        navigator.clipboard.writeText(selectedText).then(() => {
+          //console.log('Copied to clipboard:', selectedText);
+        }).catch((err) => {
+          //console.error('Failed to copy text: ', err);
+        });
+      }
+    }
+  }
+
   let titleProp: React.ReactNode = rawTitle;
   if (typeof rawTitle === 'string' && (multiline || width)) {
     titleProp = (
@@ -78,6 +92,8 @@ export default function BasicTooltip({ children, boxProps, placement = 'top', ar
           },
           scrollbarWidth: 'thin'
         }}
+        onDoubleClick={copyHandler}
+        onSelect={copyHandler}
       >
         {rawTitle}
       </Box>
