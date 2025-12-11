@@ -1,7 +1,7 @@
 import { Container, Grid, Paper } from '@mui/material';
 import { useState } from 'react';
-import { columns, CommonTooltip1 } from '../../common/Tooltip';
-import './Mui1.css';
+import { columns, CommonTooltip } from './Tooltip';
+import './Mui.css';
 
 export default function Mui1() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -20,7 +20,7 @@ export default function Mui1() {
         {columns.map((col) => {
           return (
             <Grid size={1} key={col.id} sx={{ height: 100 }} data-id={col.id}>
-              <CommonTooltip1
+              <CommonTooltip
                 title={columns.map(c => `${c.label}:\n  ${c.value}`).join('\n\n')}
                 open={!!anchorEl && (isCellEntered || isTooltipEntered)}
                 anchorEl={anchorEl}
@@ -44,7 +44,7 @@ export default function Mui1() {
                   <div className="mui-grid-label">{col.label}</div>
                   <div className="mui-grid-value">{col.value}</div>
                 </Paper>
-              </CommonTooltip1>
+              </CommonTooltip>
             </Grid>
           );
         })}

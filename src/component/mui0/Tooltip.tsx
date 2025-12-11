@@ -36,7 +36,7 @@ export interface CommonTooltipProps {
   onTooltipMouseLeave?: () => void;
 }
 
-export function CommonTooltip1({ title, open, anchorEl, onClose, children, onTooltipMouseEnter, onTooltipMouseLeave }: CommonTooltipProps) {
+export function CommonTooltip({ title, open, anchorEl, onClose, children, onTooltipMouseEnter, onTooltipMouseLeave }: CommonTooltipProps) {
   return (
     <>
       {children}
@@ -52,7 +52,6 @@ export function CommonTooltip1({ title, open, anchorEl, onClose, children, onToo
         <div
           onMouseEnter={onTooltipMouseEnter}
           onMouseLeave={onTooltipMouseLeave}
-          style={{ marginBottom: "30px" }}
         >
           <pre
             style={{ margin: 0, userSelect: 'text', fontFamily: 'inherit', padding: 8 }}
