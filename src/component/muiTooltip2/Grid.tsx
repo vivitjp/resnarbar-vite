@@ -1,16 +1,7 @@
 import { Box, Container, Paper } from '@mui/material';
 import GridStyled, { GridLabel, GridValue } from '../common/styledGrid';
-import BasicTooltip from './Tooltip';
-
-const columns = [
-  { id: 1, label: 'ID', value: '1' },
-  { id: 2, label: '名前', value: 'サンプル' },
-  { id: 3, label: '年齢', value: '25' },
-  { id: 4, label: '職業', value: 'エンジニア' },
-  { id: 5, label: '国', value: '日本' },
-];
-
-const title = columns.map(c => `${c.label}:\n  ${c.value}`).join('\n\n');
+import BasicTooltip from '../common/Tooltip';
+import { title, columns } from '../common/data';
 
 export default function Mui1() {
   return (
@@ -64,7 +55,6 @@ export default function Mui1() {
               <GridStyled
                 size={1}
                 key={col.id}
-                // sx={{ height: 100 }}
                 data-id={col.id}
                 gap={0}
               >
