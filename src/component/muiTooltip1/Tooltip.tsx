@@ -36,12 +36,19 @@ export default function BasicTooltip({ children, boxProps, placement = 'top', ar
     popper: {
       ...(incomingSlotProps?.popper ?? {}),
       popperRef,
-      anchorEl: {
-        getBoundingClientRect: () => {
-          const y = areaRef.current?.getBoundingClientRect().y ?? 0;
-          return new DOMRect(positionRef.current.x, y, 0, 0);
-        },
-      },
+      // Only override anchorEl when followCursor is enabled. When false,
+      // leave incomingSlotProps.popper.anchorEl untouched so Tooltip uses
+      // the normal anchor behavior.
+      ...(followCursor
+        ? {
+          anchorEl: {
+            getBoundingClientRect: () => {
+              const y = areaRef.current?.getBoundingClientRect().y ?? 0;
+              return new DOMRect(positionRef.current.x, y, 0, 0);
+            },
+          },
+        }
+        : {}),
     },
     tooltip: {
       ...(incomingSlotProps?.tooltip ?? {}),
@@ -93,11 +100,11 @@ export default function BasicTooltip({ children, boxProps, placement = 'top', ar
       {...rest}
       title={titleProp}
       slotProps={mergedSlotProps}
-      followCursor={false}
+      followCursor={followCursor}
     >
       <Box
         ref={areaRef}
-        onMouseMove={handleMouseMove}
+        onMouseMove={followCursor ? handleMouseMove : undefined}
         sx={{
           p: 0,
           backgroundColor: 'white'
