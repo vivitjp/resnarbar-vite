@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
+import { Link } from 'react-router-dom'
 import './App.css'
 
 function App() {
@@ -24,9 +25,9 @@ function App() {
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
-        <a href="/mui" style={{ display: 'inline-block', marginTop: 16, color: '#1976d2', textDecoration: 'underline' }}>
+        <Link to="/mui" style={{ display: 'inline-block', marginTop: 16, color: '#1976d2', textDecoration: 'underline' }}>
           MUIページへ
-        </a>
+        </Link>
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
