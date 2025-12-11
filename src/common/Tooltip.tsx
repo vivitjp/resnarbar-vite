@@ -12,13 +12,18 @@ export const columns = [
 export const tooltipSx: SxProps = {
   bgcolor: 'white',
   color: 'black',
-  width: 100,
-  height: 60,
+  width: 160,
+  height: 100,
   overflow: 'auto',
   whiteSpace: 'pre-line',
   border: '1px solid #ccc',
-  borderRadius: 0,
-  fontSize: 10
+  borderRadius: 2,
+  fontSize: 10,
+  boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
+  '&::-webkit-scrollbar': {
+    width: '4px'
+  },
+  scrollbarWidth: 'thin'
 };
 
 export interface CommonTooltipProps {
@@ -31,7 +36,7 @@ export interface CommonTooltipProps {
   onTooltipMouseLeave?: () => void;
 }
 
-export function CommonTooltip({ title, open, anchorEl, onClose, children, onTooltipMouseEnter, onTooltipMouseLeave }: CommonTooltipProps) {
+export function CommonTooltip1({ title, open, anchorEl, onClose, children, onTooltipMouseEnter, onTooltipMouseLeave }: CommonTooltipProps) {
   return (
     <>
       {children}
@@ -47,8 +52,11 @@ export function CommonTooltip({ title, open, anchorEl, onClose, children, onTool
         <div
           onMouseEnter={onTooltipMouseEnter}
           onMouseLeave={onTooltipMouseLeave}
+          style={{ marginBottom: "30px" }}
         >
-          <pre style={{ margin: 0, userSelect: 'text', fontFamily: 'inherit', padding: 8 }}>{title}</pre>
+          <pre
+            style={{ margin: 0, userSelect: 'text', fontFamily: 'inherit', padding: 8 }}
+          >{title}</pre>
         </div>
       </Popover>
     </>
