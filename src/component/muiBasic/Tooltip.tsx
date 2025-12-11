@@ -1,52 +1,57 @@
-import React from 'react';
-import Tooltip from '@mui/material/Tooltip';
-import { type SxProps } from '@mui/material';
+import * as React from 'react';
+import Box, { type BoxProps } from '@mui/material/Box';
+import Tooltip, { type TooltipProps } from '@mui/material/Tooltip';
+import { type Instance } from '@popperjs/core';
 
-const defaultTooltipSx: SxProps = {
-  bgcolor: 'white',
-  color: 'black',
-  maxWidth: 200,
-  whiteSpace: 'pre-line',
-  overflow: 'auto',
-  boxShadow: '0 2px 6px rgba(0,0,0,0.12)',
-  borderRadius: 1,
-  pointerEvents: 'auto',
-  zIndex: 1400,
-};
-
-export interface BasicTooltipProps {
-  title: React.ReactNode;
-  children: React.ReactNode;
-  followCursor?: boolean;
-  open?: boolean;
-  onClose?: (event?: React.SyntheticEvent | Event | null, reason?: string) => void;
-  sx?: SxProps;
-  arrow?: boolean;
+interface BasicTooltipProps extends Omit<TooltipProps, 'slotProps'> {
+  boxProps?: BoxProps;
+  // MUI versions differ on slot prop names; allow callers to pass slotProps
+  // (keeps runtime flexibility while avoiding type errors).
+  slotProps?: any;
 }
 
-export default function BasicTooltip({ title, children, followCursor = false, open, onClose, sx, arrow = false }: BasicTooltipProps) {
+export default function BasicTooltip({ children, boxProps, placement = 'top', arrow = true, ...tooltipProps }: BasicTooltipProps) {
+  const positionRef = React.useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const popperRef = React.useRef<Instance | null>(null);
+  const areaRef = React.useRef<HTMLDivElement | null>(null);
+
+  const handleMouseMove = (event: React.MouseEvent) => {
+    positionRef.current = { x: event.clientX, y: event.clientY };
+
+    if (popperRef.current != null) {
+      popperRef.current.update();
+    }
+  };
+
+  const mergedSlotProps = {
+    ...tooltipProps.slotProps,
+    popper: {
+      ...(tooltipProps.slotProps?.popper ?? {}),
+      popperRef,
+      anchorEl: {
+        getBoundingClientRect: () => {
+          const y = areaRef.current?.getBoundingClientRect().y ?? 0;
+          return new DOMRect(positionRef.current.x, y, 0, 0);
+        },
+      },
+    },
+  };
+
   return (
     <Tooltip
-      title={title}
-      open={open}
-      onClose={onClose}
-      disableFocusListener
-      disableTouchListener
-      enterDelay={0}
-      leaveDelay={0}
-      followCursor={followCursor}
-      // interactive prop removed to satisfy Tooltip prop types; pointerEvents enabled via slotProps
+      placement={placement}
       arrow={arrow}
-      slotProps={{
-        tooltip: {
-          sx: { ...(defaultTooltipSx as object), ...(sx as object) },
-        },
-        arrow: {
-          sx: { color: (defaultTooltipSx as any).bgcolor }
-        }
-      }}
+      {...tooltipProps}
+      slotProps={mergedSlotProps}
     >
-      {React.isValidElement(children) ? children : <span>{children}</span>}
+      <Box
+        ref={areaRef}
+        onMouseMove={handleMouseMove}
+        sx={{ p: 0 }}
+        {...boxProps}
+      >
+        {children}
+      </Box>
     </Tooltip>
   );
 }
